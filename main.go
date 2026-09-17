@@ -68,9 +68,11 @@ func readURLs(filename string) ([]string, error) {
 	for scanner.Scan() {
 		url := strings.TrimSpace(scanner.Text())
 
-		if url != "" {
-			urls = append(urls, url)
+		if url == "" || strings.HasPrefix(url, "#") {
+			continue
 		}
+
+		urls = append(urls, url)
 	}
 
 	return urls, scanner.Err()
