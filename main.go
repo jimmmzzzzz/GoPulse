@@ -109,10 +109,18 @@ func main() {
 
 	var wg sync.WaitGroup
 
+	// Limit simultaneous requests to avoid exhausting resources on large URL lists.
+	const maxConcurrentChecks = 10
+	slots := make(chan struct{}, maxConcurrentChecks)
+
 	for _, url := range urls {
+		slots <- struct{}{}
 		wg.Add(1)
 
-		go checkURL(url, results, &wg)
+		go func(url string) {
+			defer func() { <-slots }()
+			checkURL(url, results, &wg)
+		}(url)
 	}
 
 	go func() {
