@@ -17,12 +17,23 @@ type Result struct {
 	Error      error
 }
 
+func normalizeURL(url string) string {
+	url = strings.TrimSpace(url)
+	lowerURL := strings.ToLower(url)
+
+	if strings.HasPrefix(lowerURL, "http://") {
+		return "http://" + url[len("http://"):]
+	}
+	if strings.HasPrefix(lowerURL, "https://") {
+		return "https://" + url[len("https://"):]
+	}
+	return "https://" + url
+}
+
 func checkURL(url string, ch chan Result, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
-		url = "https://" + url
-	}
+	url = normalizeURL(url)
 
 	start := time.Now()
 
