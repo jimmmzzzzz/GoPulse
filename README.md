@@ -7,7 +7,7 @@ It checks multiple websites concurrently and displays their HTTP status code, av
 Features
 
 - Check multiple websites at once
-- Concurrent requests using Go goroutines
+- Concurrent requests using Go goroutines (limited to 10 at a time)
 - HTTP status code detection
 - Response time measurement
 - Detect unavailable websites
@@ -23,7 +23,7 @@ Installation
 
 Clone the repository:
 
-git clone https://github.com/YOURUSERNAME/GoPulse.git
+git clone https://github.com/jimmmzzzzz/GoPulse.git
 
 Move into the project directory:
 
